@@ -1,0 +1,9 @@
+{
+    "blackSquare": "#446637",
+    "whiteSquare": "#9fff80",
+    "selected": "orange",
+    "moving": "blue",
+    "attacking": "red",
+    "castling": "#00af00",
+	"inCheck": "yellow"
+}
