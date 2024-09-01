@@ -8,41 +8,24 @@ def pawnLocations(row,col,vBoard): #Returns an array of all potential pawn move 
             locations.append([row+1,col])
             if row == 1 and vBoard[row+2][col] == 'OO': #First pawn move can go two spaces, this checks for it
                 locations.append([row+2,col])
-            else:
-                pass
-        else:
-            pass
         
         if col-1 > -1 and vBoard[row+1][col-1][0] == 'w': #If opposite colour piece and diagonal
             locations.append([row+1,col-1])
-        else:
-            pass
         
         if col+1 < 8 and vBoard[row+1][col+1][0] == 'w':
             locations.append([row+1,col+1])
-        else:
-            pass
 
     elif row-1 > -1 and colour == 'w':
         if vBoard[row-1][col] == 'OO':
             locations.append([row-1,col])
             if row == 6 and vBoard[row-2][col] == 'OO':
                 locations.append([row-2,col])
-            else:
-                pass
-        else:
-            pass
+
         if col-1 > -1 and vBoard[row-1][col-1][0] == 'b':
             locations.append([row-1,col-1])
-        else:
-            pass
         
         if col+1 < 8 and vBoard[row-1][col+1][0] == 'b':
             locations.append([row-1,col+1])
-        else:
-            pass
-    else:
-        pass
     return locations
 
 def rookLocations(row,col,vBoard): #As above, returns array of potential rook move coordinates
@@ -183,28 +166,18 @@ def verifyCheck(row,col,vBoard): #Row and column coordinates of the king that sh
     for move in pawnLocations(row,col,vBoard):
         if vBoard[move[0]][move[1]][1] == 'P': #If the king can take using the pawn's path then the enemy pawn can take the king
             return True #King is in check, no further tests required
-        else:
-            pass
     for move in bishopLocations(row,col,vBoard): #Same principle as above etc.
         if vBoard[move[0]][move[1]][1] == 'B' or vBoard[move[0]][move[1]][1] == 'Q':
             return True
-        else:
-            pass
     for move in rookLocations(row,col,vBoard):
         if vBoard[move[0]][move[1]][1] == 'R' or vBoard[move[0]][move[1]][1] == 'Q':
             return True
-        else:
-            pass
     for move in knightLocations(row,col,vBoard):
         if vBoard[move[0]][move[1]][1] == 'N':
             return True
-        else:
-            pass
     for move in kingLocations(row,col,vBoard):
         if vBoard[move[0]][move[1]][1] == 'K':
             return True
-        else:
-            pass
     return False
 
 def verifyCheckMate(kingRow,kingCol,vBoard): #Row and column coordinates for the king that should be in check mate
@@ -234,11 +207,7 @@ def verifyCheckMate(kingRow,kingCol,vBoard): #Row and column coordinates for the
                     if vBoard[row][col][1] == 'K': #If you're moving the king himself then the king's coordinates obviously have to be updated.
                         kingRow = move[0]
                         kingCol = move[1]
-                    else:
-                        pass
 
                     if verifyCheck(kingRow,kingCol,testBoard) == False:
                         return False #There is a way out of checkmate
-                    else:
-                        pass
     return True #If there isn't a single check mate = False scenario then it is a checkmate

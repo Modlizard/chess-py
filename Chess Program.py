@@ -52,17 +52,14 @@ kings = {'w':{'checked':False,'row':7,'col':4},'b':{'checked':False,'row':0,'col
 
 def drawBoard(dBoard): #Draws the board
     for y in range(8):
-        for x in range(8): 
-            if (y%2 == 0) == (x%2 == 0): #if (odd number, odd row) or (even number, even row) make it a white square
-                piecePicture = PhotoImage(master=window,file=pieceDir+dBoard[x][y]+'.png', width=64, height=64) 
+        for x in range(8):
+            piecePicture = PhotoImage(master=window,file=pieceDir+dBoard[x][y]+'.png', width=64, height=64) #Pictures are named same as pieces
+            if y%2 == x%2: #if (odd number, odd row) or (even number, even row) make it a white square
                 buttons[x][y] = Button(window, bg=cfgColours['whiteSquare'], height=64, width=64, image=piecePicture, compound='c', relief='groove', command=lambda row=x, column=y : checkMoves(row,column))
-                buttons[x][y].grid(row=x, column=y) #.grid() has to be on a seperate line don't question it idk either
-                buttons[x][y].image = piecePicture #This stops garbage collection clearing the pictures (check the bototm of https://effbot.org/tkinterbook/photoimage.htm)
             else:
-                piecePicture = PhotoImage(master=window,file=pieceDir+dBoard[x][y]+'.png', width=64, height=64) #Pictures are named same as pieces
                 buttons[x][y] = Button(window, bg=cfgColours['blackSquare'], height=64, width=64, image=piecePicture, compound='c', relief='groove', command=lambda row=x, column=y : checkMoves(row,column))
-                buttons[x][y].grid(row=x, column=y)
-                buttons[x][y].image = piecePicture
+            buttons[x][y].grid(row=x, column=y) #.grid() has to be on a seperate line don't question it idk either
+            buttons[x][y].image = piecePicture #This stops garbage collection clearing the pictures (check the bototm of https://effbot.org/tkinterbook/photoimage.htm)
 
 def clearMoveOpts():
     for x in range(8):
@@ -130,8 +127,7 @@ def promotePawn(window,piece,x,y):
             moveText.config(text='Checkmate by white!')
             turnText.config(text='White wins!')
             gameFinished = True
-        else:
-            pass
+            
     elif turn == 'b' and verifyCheck(kings['w']['row'],kings['w']['col'],board) == True:
         buttons[kings['w']['row']][kings['w']['col']].config(bg=cfgColours['inCheck'])
         kings['w']['checked'] = True
@@ -139,10 +135,6 @@ def promotePawn(window,piece,x,y):
             moveText.config(text='Checkmate by black!')
             turnText.config(text='Black wins!')
             gameFinished = True
-        else:
-            pass
-    else:
-        pass 
 
     window.destroy() #A selection has been made, the window must be destroyed
     promoting = False #Resume the game
@@ -271,14 +263,10 @@ def checkMoves(row,col):
                 castling[turn]['rook']['L'] = True 
             elif castling[turn]['rook']['R'] == False and board[row][col][1] == 'R' and col == 7:
                 castling[turn]['rook']['R'] = True
-            else:
-                pass
             
             if board[row][col][1] == 'K': #Updating king's position if he moved
                 kings[turn]['row'] = row
                 kings[turn]['col'] = col
-            else:
-                pass
 
             gameFinished = False     
             if turn == 'w' and verifyCheck(kings['b']['row'],kings['b']['col'],board) == True: #Did you check the enemy king?
@@ -297,10 +285,6 @@ def checkMoves(row,col):
                     moveText.config(text='Checkmate by black!')
                     turnText.config(text='Black wins!')
                     gameFinished = True
-                else:
-                    pass
-            else:
-                pass 
 
             clearMoveOpts()
             selection[0] = False
@@ -342,8 +326,6 @@ def checkMoves(row,col):
     else: #If selected
         if buttons[row][col]['bg'] == cfgColours['selected']:
             clearMoveOpts()
-        else:
-            pass
         selection[0] = False #Selection is no longer live
 
 def pawnMoves(row,col):
@@ -387,14 +369,10 @@ def kingMoves(row,col):
             buttons[move[0]][move[1]].config(bg=cfgColours['attacking'])
 
     if (castling[turn]['king'] == False and castling[turn]['rook']['R'] == False) and (board[row][col+1] == 'OO' and board[row][col+2] == 'OO'):
-        buttons[row][col+3].config(bg=cfgColours['castling'])
-    else: #This is for the King side
-        pass
+        buttons[row][col+3].config(bg=cfgColours['castling']) #This is for the King side
     
     if (castling[turn]['king'] == False and castling[turn]['rook']['L'] == False) and (board[row][col-1] == 'OO' and board[row][col-2] == 'OO' and board[row][col-3] == 'OO'):
-        buttons[row][col-4].config(bg=cfgColours['castling'])
-    else: #This is for the Queen side
-        pass
+        buttons[row][col-4].config(bg=cfgColours['castling']) #This is for the Queen side
     
 def knightMoves(row,col):
     moves = knightLocations(row,col,board)
